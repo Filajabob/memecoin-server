@@ -1,9 +1,11 @@
 {
-    "390872": {
-        "id": 390872,
-        "firstname": "hi",
-        "lastname": "hi",
-        "password": "dfne",
+    "490631": {
+        "id": 490631,
+        "firstname": "john",
+        "lastname": "doe",
+        "alias": "johndoe69",
+        "email": "john.doe@haha.com",
+        "password": "12345",
         "balance": 0
     }
 }
