@@ -5,12 +5,12 @@ from. errors import *
 
 
 class Transaction:
-    def __init__(self, sender, recipent, amount):
+    def __init__(self, sender, recipient, amount):
         """
         A placeholder for a transaction between two users. Does not include authentication.
 
         :param sender:
-        :param recipent:
+        :param recipient:
         :param amount:
         """
 
@@ -20,9 +20,10 @@ class Transaction:
         self.id = len(transactions)
 
         self.sender = sender
-        self.recipent = recipent
+        self.recipient = recipient
         self.amount = amount
         self.request_timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        self.execution_timestamp = None
 
     def valid(self):
         if self.sender.balance < self.amount:
@@ -33,16 +34,21 @@ class Transaction:
     def serialize(self, output=None):
         serial = {
             "id": self.id,
-            "sender": self.sender.serialize(),
-            "recipent": self.recipent.serialize(),
+            "sender": str(self.sender.id),
+            "recipient": str(self.recipient.id),
             "amount": self.amount,
-            "request_timestamp": self.request_timestamp
+            "request_timestamp": self.request_timestamp,
+            "execution_timestamp": self.execution_timestamp
         }
 
         if output:
-            with open(Constants.TRANSACTIONS_JSON) as f:
+            with open(output, 'r+') as f:
                 data = json.load(f)
-                data.append(serial)
+                data[str(self.id)] = serial
+
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.truncate()
 
         return serial
 
@@ -60,10 +66,12 @@ class Transaction:
             if not self.valid():
                 raise InsufficientFunds("Insufficient funds.")
 
+        self.sender.deduct(self.amount)
+        self.recipient.increase(self.amount)
+
+        self.execution_timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+
         if log:
             self.serialize(Constants.TRANSACTIONS_JSON)
-
-        self.sender.deduct(self.amount)
-        self.recipent.increase(self.amount)
 
         # TODO: When User.notify is implemented, should be added here.

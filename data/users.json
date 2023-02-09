@@ -1,11 +1,20 @@
 {
     "490631": {
-        "id": 490631,
+        "id": "490631",
         "firstname": "john",
         "lastname": "doe",
         "alias": "johndoe69",
         "email": "john.doe@haha.com",
         "password": "12345",
-        "balance": 0
+        "balance": 85
+    },
+    "767903": {
+        "id": "767903",
+        "firstname": "john",
+        "lastname": "doe",
+        "alias": "jhndoe69",
+        "email": "john.doe@haha.com",
+        "password": "12345",
+        "balance": 25
     }
 }

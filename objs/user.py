@@ -70,7 +70,7 @@ class User:
         self.balance -= amount
 
         if not local_save:
-            self.serialize()
+            self.serialize(Constants.USERS_JSON)
 
     def increase(self, amount: int, *, local_save: bool = False):
         """
@@ -83,7 +83,7 @@ class User:
         self.balance += amount
 
         if not local_save:
-            self.serialize()
+            self.serialize(Constants.USERS_JSON)
 
     def notify(self, subject, content):
         raise NotImplementedError()
@@ -151,4 +151,4 @@ class User:
 
     @staticmethod
     def load_from_alias(alias):
-        return User.load_from_id(utils.user_lookup())
+        return User.load_from_id(utils.user_lookup(alias))

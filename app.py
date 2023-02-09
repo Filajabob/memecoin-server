@@ -1,6 +1,23 @@
 from flask import Flask, request
 import objs
 from objs.errors import *
+from logging.config import dictConfig
+
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
 
 app = Flask(__name__)
 
@@ -35,12 +52,17 @@ def new_user():
     return {
         "status": "success",
         "message": f"U{user.id} was created.",
-        "user_id": user.ids
+        "user_id": user.id
            }, 200
 
 
 @app.route('/user/run/transaction/<user_attr_type>', methods=["POST"])
 def transaction(user_attr_type):
+    if request.args.get("amount") is None:
+        return {
+                   "status": "failure",
+                   "message": "Argument 'amount' was not provided.",
+               }, 400
     try:
         if user_attr_type == "id":
             transaction_obj = objs.Transaction(objs.User.load_from_id(request.args.get("sender")),
@@ -77,7 +99,7 @@ def transaction(user_attr_type):
         return {
             "status": "success",
             "message": f"{transaction_obj.amount} MemeCoins were sent from U{transaction_obj.sender.id} to "
-                       f"U{transaction_obj.recipent.id}."
+                       f"U{transaction_obj.recipient.id}."
         }, 200
     except InsufficientFunds:
         return {

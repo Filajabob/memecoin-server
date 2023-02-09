@@ -1,1 +1,24 @@
-[]
+{
+    "0": {
+        "id": 0,
+        "sender": "490631",
+        "recipient": "767903",
+        "amount": 5,
+        "request_timestamp": "02/09/2023, 17:08:46"
+    },
+    "1": {
+        "id": 1,
+        "sender": "490631",
+        "recipient": "767903",
+        "amount": 5,
+        "request_timestamp": "02/09/2023, 17:08:54"
+    },
+    "2": {
+        "id": 2,
+        "sender": "490631",
+        "recipient": "767903",
+        "amount": 5,
+        "request_timestamp": "02/09/2023, 17:10:36",
+        "execution_timestamp": "02/09/2023, 17:10:36"
+    }
+}
